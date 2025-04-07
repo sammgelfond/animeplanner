@@ -61,8 +61,8 @@ const AnimePlanner: React.FC = () => {
           <li key={index}>
             <strong>{anime.title}</strong> — {anime.day} à {anime.time}
             <div style={{ marginLeft: 20, marginTop: 5 }}>
-              <a href={`https://anime-sama.fr/anime/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}`} target="_blank" rel="noopener noreferrer" style={{ marginRight: 15 }}>Voir sur Anime-sama</a>
-              <a href={`https://v6.voiranime.com/anime/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}`} target="_blank" rel="noopener noreferrer">Voir sur Voiranime</a>
+              <a href={`https://anime-sama.fr/catalogue/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}/saison1/vostfr/`} target="_blank" rel="noopener noreferrer" style={{ marginRight: 15 }}>Voir sur Anime-sama</a>
+              <a href={`https://v6.voiranime.com/catalogue/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}/1/vostfr/`} target="_blank" rel="noopener noreferrer">Voir sur Voiranime</a>
             </div>
           </li>
         ))}
