@@ -32,7 +32,7 @@ body {
 }
 
 h1 {
-  color: #2c3e50;
+  color: #ffffff;
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -43,15 +43,17 @@ h1 {
 }
 
 .anime-item {
-  background: #f8f9fa;
+  background: #383838;
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1rem;
   transition: transform 0.2s;
+  border: 1px solid #4a4a4a;
 }
 
 .anime-item:hover {
   transform: translateY(-2px);
+  background: #404040;
 }
 
 .anime-title {
