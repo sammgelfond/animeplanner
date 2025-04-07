@@ -54,15 +54,32 @@ const AnimePlanner: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ padding: 20, fontFamily: "sans-serif" }}>
+    <div className="anime-planner">
       <h1>Planning des animés (Printemps 2025)</h1>
-      <ul>
+      <ul className="anime-list">
         {animeList.map((anime, index) => (
-          <li key={index}>
-            <strong>{anime.title}</strong> — {anime.day} à {anime.time}
-            <div style={{ marginLeft: 20, marginTop: 5 }}>
-              <a href={`https://anime-sama.fr/catalogue/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}/saison1/vostfr/`} target="_blank" rel="noopener noreferrer" style={{ marginRight: 15 }}>Voir sur Anime-sama</a>
-              <a href={`https://v6.voiranime.com/catalogue/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}/1/vostfr/`} target="_blank" rel="noopener noreferrer">Voir sur Voiranime</a>
+          <li key={index} className="anime-item">
+            <div className="anime-title">{anime.title}</div>
+            <div className="anime-time">
+              {anime.day} à {anime.time}
+            </div>
+            <div className="anime-links">
+              <a 
+                href={`https://anime-sama.fr/catalogue/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}/saison1/vostfr/`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="anime-link"
+              >
+                Voir sur Anime-sama
+              </a>
+              <a 
+                href={`https://v6.voiranime.com/catalogue/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}/1/vostfr/`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="anime-link"
+              >
+                Voir sur Voiranime
+              </a>
             </div>
           </li>
         ))}
