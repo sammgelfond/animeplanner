@@ -9,22 +9,52 @@ const titleMapping: { [key: string]: string } = {
   // Ajoutez d'autres mappings ici selon vos besoins
 };
 
-const getVoirAnimeSlug = (title: string): string => {
-  // Vérifie si un mapping existe
-  for (const [key, value] of Object.entries(titleMapping)) {
-    if (title.toLowerCase().includes(key.toLowerCase())) {
-      return value;
+const getVoirAnimeSlug = async (title: string): Promise<string> => {
+  try {
+    // Essaie d'abord le mapping
+    for (const [key, value] of Object.entries(titleMapping)) {
+      if (title.toLowerCase().includes(key.toLowerCase())) {
+        return value;
+      }
     }
+
+    // Fait une requête à VoirAnime pour chercher l'anime
+    const searchUrl = `https://v6.voiranime.com/anime/${title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")}`;
+      
+    const response = await fetch(searchUrl);
+    if (response.ok) {
+      const text = await response.text();
+      // Extrait le slug depuis l'URL de la page
+      const match = text.match(/<link rel="canonical" href="https:\/\/v6\.voiranime\.com\/anime\/([^"]+)"/);
+      if (match) {
+        return match[1];
+      }
+    }
+    
+    // Si rien ne fonctionne, retourne la transformation par défaut
+    return title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+  } catch (error) {
+    console.error("Erreur lors de la récupération du slug:", error);
+    return title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
   }
-  
-  // Sinon, utilise la transformation par défaut
-  return title
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
 };
 
 const AnimePlanner: React.FC = () => {
@@ -101,7 +131,7 @@ const AnimePlanner: React.FC = () => {
               {anime.day} à {anime.time}
             </div>
             <a 
-              href={`https://v6.voiranime.com/anime/${getVoirAnimeSlug(anime.title)}`}
+              href={`https://v6.voiranime.com/anime/${await getVoirAnimeSlug(anime.title)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="watch-link"
