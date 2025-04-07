@@ -6,6 +6,7 @@ const titleMapping: { [key: string]: string } = {
   "Demon Slayer": "kimetsu-no-yaiba",
   "My Hero Academia": "boku-no-hero-academia",
   "Haite Kudasai, Takamine-san": "please-put-them-on-takamine-san",
+  "Kijin Gentoushou": "sword-of-the-demon-hunter",
   // Ajoutez d'autres mappings ici selon vos besoins
 };
 
