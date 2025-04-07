@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const AnimePlanner: React.FC = () => {
   const [animeList, setAnimeList] = useState<
-    { title: string; day: string; time: string }[]
+    { title: string; day: string; time: string; image: string }[]
   >([]);
 
   useEffect(() => {
@@ -13,6 +13,9 @@ const AnimePlanner: React.FC = () => {
             media(season: SPRING, seasonYear: 2025, type: ANIME, format: TV, status: RELEASING) {
               title {
                 romaji
+              }
+              coverImage {
+                large
               }
               airingSchedule(notYetAired: true, perPage: 1) {
                 nodes {
@@ -36,6 +39,7 @@ const AnimePlanner: React.FC = () => {
         const date = airingAt ? new Date(airingAt * 1000) : null;
         return {
           title: anime.title.romaji,
+          image: anime.coverImage.large,
           day: date
             ? date.toLocaleDateString("fr-FR", { weekday: "long" })
             : "Inconnu",
@@ -59,6 +63,7 @@ const AnimePlanner: React.FC = () => {
       <ul className="anime-list">
         {animeList.map((anime, index) => (
           <li key={index} className="anime-item">
+            <img src={anime.image} alt={anime.title} className="anime-image" />
             <div className="anime-title">{anime.title}</div>
             <div className="anime-time">
               {anime.day} à {anime.time}
