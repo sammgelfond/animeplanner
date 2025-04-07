@@ -93,19 +93,34 @@ h1 {
 }
 
 .watch-link {
-  display: inline-block;
+  display: block;
   background: #4a4a4a;
   color: white;
   text-decoration: none;
   padding: 0.5rem;
   border-radius: 4px;
-  margin-top: 0.5rem;
+  margin: 0.5rem auto;
+  width: 80%;
+  text-align: center;
   font-size: 0.9rem;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 .watch-link:hover {
   background: #5a5a5a;
+  transform: scale(1.05);
+}
+
+.anime-item {
+  position: relative;
+  z-index: 0;
+}
+
+.anime-title, .anime-time {
+  padding: 0 1rem;
 }
 
 
