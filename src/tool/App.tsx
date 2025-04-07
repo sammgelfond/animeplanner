@@ -5,6 +5,7 @@ const titleMapping: { [key: string]: string } = {
   "Black Clover": "black-clover-tv",
   "Demon Slayer": "kimetsu-no-yaiba",
   "My Hero Academia": "boku-no-hero-academia",
+  "Haite Kudasai, Takamine-san": "haite-kudasai-takamine-san",
   // Ajoutez d'autres mappings ici selon vos besoins
 };
 
