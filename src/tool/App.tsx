@@ -59,7 +59,7 @@ const getVoirAnimeSlug = async (title: string): Promise<string> => {
 
 const AnimePlanner: React.FC = () => {
   const [animeList, setAnimeList] = useState<
-    { title: string; day: string; time: string; image: string }[]
+    { title: string; day: string; time: string; image: string; slug?: string }[]
   >([]);
 
   useEffect(() => {
@@ -91,7 +91,8 @@ const AnimePlanner: React.FC = () => {
       });
 
       const data = await response.json();
-      const animes = data.data.Page.media.map((anime: any) => {
+      const animes = await Promise.all(data.data.Page.media.map(async (anime: any) => {
+        const slug = await getVoirAnimeSlug(anime.title.romaji);
         const airingAt = anime.airingSchedule.nodes[0]?.airingAt;
         const date = airingAt ? new Date(airingAt * 1000) : null;
         return {
@@ -106,8 +107,9 @@ const AnimePlanner: React.FC = () => {
                 minute: "2-digit",
               })
             : "Bientôt",
+          slug,
         };
-      });
+      }));
       setAnimeList(animes);
     };
 
@@ -131,7 +133,7 @@ const AnimePlanner: React.FC = () => {
               {anime.day} à {anime.time}
             </div>
             <a 
-              href={`https://v6.voiranime.com/anime/${await getVoirAnimeSlug(anime.title)}`}
+              href={`https://v6.voiranime.com/anime/${anime.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="watch-link"
