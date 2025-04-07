@@ -1,5 +1,31 @@
 import React, { useEffect, useState } from "react";
 
+const titleMapping: { [key: string]: string } = {
+  "Mashle": "mashle-magic-and-muscles",
+  "Black Clover": "black-clover-tv",
+  "Demon Slayer": "kimetsu-no-yaiba",
+  "My Hero Academia": "boku-no-hero-academia",
+  // Ajoutez d'autres mappings ici selon vos besoins
+};
+
+const getVoirAnimeSlug = (title: string): string => {
+  // Vérifie si un mapping existe
+  for (const [key, value] of Object.entries(titleMapping)) {
+    if (title.toLowerCase().includes(key.toLowerCase())) {
+      return value;
+    }
+  }
+  
+  // Sinon, utilise la transformation par défaut
+  return title
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+};
+
 const AnimePlanner: React.FC = () => {
   const [animeList, setAnimeList] = useState<
     { title: string; day: string; time: string; image: string }[]
@@ -74,13 +100,7 @@ const AnimePlanner: React.FC = () => {
               {anime.day} à {anime.time}
             </div>
             <a 
-              href={`https://v6.voiranime.com/anime/${anime.title
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/[^a-z0-9\s-]/g, "")
-                .trim()
-                .replace(/\s+/g, "-")}`}
+              href={`https://v6.voiranime.com/anime/${getVoirAnimeSlug(anime.title)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="watch-link"
