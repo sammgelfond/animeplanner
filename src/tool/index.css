@@ -108,6 +108,15 @@ h1 {
   background: #5a5a5a;
 }
 
+.watch-link-invalid {
+  background: #6b2020;
+  cursor: not-allowed;
+}
+
+.watch-link-invalid:hover {
+  background: #7b2525;
+}
+
 
 
 
