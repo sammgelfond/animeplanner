@@ -73,7 +73,16 @@ const AnimePlanner: React.FC = () => {
             <div className="anime-time">
               {anime.day} à {anime.time}
             </div>
-            
+            <div className="anime-links">
+              <a 
+                href={`https://www.crunchyroll.com/search?q=${encodeURIComponent(anime.title)}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="anime-link"
+              >
+                Voir sur Crunchyroll
+              </a>
+            </div>
           </li>
         ))}
           </div>
