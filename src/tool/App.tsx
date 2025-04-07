@@ -29,17 +29,8 @@ const getVoirAnimeSlug = (title: string): string => {
 
 const AnimePlanner: React.FC = () => {
   const [animeList, setAnimeList] = useState<
-    { title: string; day: string; time: string; image: string; linkExists?: boolean }[]
+    { title: string; day: string; time: string; image: string }[]
   >([]);
-
-  const checkAnimeLink = async (title: string) => {
-    try {
-      const response = await fetch(`https://v6.voiranime.com/anime/${getVoirAnimeSlug(title)}`);
-      return response.status === 200;
-    } catch {
-      return false;
-    }
-  };
 
   useEffect(() => {
     const fetchAnimes = async () => {
@@ -70,8 +61,7 @@ const AnimePlanner: React.FC = () => {
       });
 
       const data = await response.json();
-      const animes = await Promise.all(data.data.Page.media.map(async (anime: any) => {
-        const linkExists = await checkAnimeLink(anime.title.romaji);
+      const animes = data.data.Page.media.map((anime: any) => {
         const airingAt = anime.airingSchedule.nodes[0]?.airingAt;
         const date = airingAt ? new Date(airingAt * 1000) : null;
         return {
@@ -86,9 +76,8 @@ const AnimePlanner: React.FC = () => {
                 minute: "2-digit",
               })
             : "Bientôt",
-          linkExists
         };
-      }));
+      });
       setAnimeList(animes);
     };
 
@@ -115,9 +104,9 @@ const AnimePlanner: React.FC = () => {
               href={`https://v6.voiranime.com/anime/${getVoirAnimeSlug(anime.title)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className={`watch-link ${!anime.linkExists ? 'watch-link-invalid' : ''}`}
+              className="watch-link"
             >
-              {anime.linkExists ? 'Regarder' : 'Lien non disponible'}
+              Regarder
             </a>
           </li>
         ))}
