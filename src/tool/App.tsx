@@ -59,9 +59,14 @@ const AnimePlanner: React.FC = () => {
 
   return (
     <div className="anime-planner">
-      <h1>Planning des animés (Printemps 2025)</h1>
-      <ul className="anime-list">
-        {animeList.map((anime, index) => (
+      <h1>PLANNING</h1>
+      <div className="anime-list">
+        {['LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI', 'DIMANCHE'].map((day) => (
+          <div key={day} className="day-column">
+            <div className="day-header">{day}</div>
+            {animeList
+              .filter(anime => anime.day.toUpperCase() === day)
+              .map((anime, index) => (
           <li key={index} className="anime-item">
             <img src={anime.image} alt={anime.title} className="anime-image" />
             <div className="anime-title">{anime.title}</div>
@@ -88,7 +93,9 @@ const AnimePlanner: React.FC = () => {
             </div>
           </li>
         ))}
-      </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

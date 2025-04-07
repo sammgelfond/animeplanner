@@ -4,26 +4,43 @@ body {
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background: #1a1a1a;
+  background: #000000;
   color: #ffffff;
 }
 
 #root {
   min-height: 100vh;
-  padding: 1rem;
+  padding: 0;
 }
 
 .anime-planner {
   margin: 0 auto;
-  background: #2d2d2d;
+  background: #000000;
   padding: 1rem;
+  max-width: 1200px;
 }
 
 .anime-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  padding: 0;
+}
+
+.day-column {
+  background: #111;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.day-header {
+  text-align: center;
+  padding: 0.5rem;
+  background: #1a1a1a;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .anime-item {
