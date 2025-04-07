@@ -9,42 +9,57 @@ const titleMapping: { [key: string]: string } = {
   // Ajoutez d'autres mappings ici selon vos besoins
 };
 
-const getVoirAnimeInfo = async (title: string): Promise<{ url: string; title: string } | null> => {
+const getVoirAnimeSlug = async (title: string): Promise<string> => {
   try {
-    const searchUrl = "https://v6.voiranime.com/wp-admin/admin-ajax.php";
-    const formData = new FormData();
-    formData.append('action', 'wp_manga_get_search_suggest');
-    formData.append('title', title);
-
-    const response = await fetch(searchUrl, {
-      method: 'POST',
-      body: formData
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      if (data && data.length > 0) {
-        // Trouver l'anime le plus pertinent
-        const bestMatch = data.find((item: any) => 
-          item.title.toLowerCase().includes(title.toLowerCase())
-        ) || data[0];
-        
-        return {
-          url: bestMatch.url,
-          title: bestMatch.title
-        };
+    // Essaie d'abord le mapping
+    for (const [key, value] of Object.entries(titleMapping)) {
+      if (title.toLowerCase().includes(key.toLowerCase())) {
+        return value;
       }
     }
-    return null;
+
+    // Fait une requête à VoirAnime pour chercher l'anime
+    const searchUrl = `https://v6.voiranime.com/anime/${title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")}`;
+      
+    const response = await fetch(searchUrl);
+    if (response.ok) {
+      const text = await response.text();
+      // Extrait le slug depuis l'URL de la page
+      const match = text.match(/<link rel="canonical" href="https:\/\/v6\.voiranime\.com\/anime\/([^"]+)"/);
+      if (match) {
+        return match[1];
+      }
+    }
+    
+    // Si rien ne fonctionne, retourne la transformation par défaut
+    return title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
   } catch (error) {
-    console.error("Erreur lors de la recherche sur VoirAnime:", error);
-    return null;
+    console.error("Erreur lors de la récupération du slug:", error);
+    return title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
   }
 };
 
 const AnimePlanner: React.FC = () => {
   const [animeList, setAnimeList] = useState<
-    { title: string; day: string; time: string; image: string; voirAnimeUrl?: string; voirAnimeTitle?: string }[]
+    { title: string; day: string; time: string; image: string; slug?: string }[]
   >([]);
 
   useEffect(() => {
@@ -77,7 +92,7 @@ const AnimePlanner: React.FC = () => {
 
       const data = await response.json();
       const animes = await Promise.all(data.data.Page.media.map(async (anime: any) => {
-        const voirAnimeInfo = await getVoirAnimeInfo(anime.title.romaji);
+        const slug = await getVoirAnimeSlug(anime.title.romaji);
         const airingAt = anime.airingSchedule.nodes[0]?.airingAt;
         const date = airingAt ? new Date(airingAt * 1000) : null;
         return {
@@ -92,8 +107,7 @@ const AnimePlanner: React.FC = () => {
                 minute: "2-digit",
               })
             : "Bientôt",
-          voirAnimeUrl: voirAnimeInfo?.url,
-          voirAnimeTitle: voirAnimeInfo?.title
+          slug,
         };
       }));
       setAnimeList(animes);
@@ -119,7 +133,7 @@ const AnimePlanner: React.FC = () => {
               {anime.day} à {anime.time}
             </div>
             <a 
-              href={anime.voirAnimeUrl}
+              href={`https://v6.voiranime.com/anime/${anime.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="watch-link"
