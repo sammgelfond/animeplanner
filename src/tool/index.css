@@ -92,24 +92,4 @@ h1 {
   font-size: 0.9rem;
 }
 
-.anime-links {
-  margin-top: 0.8rem;
-  display: flex;
-  gap: 1rem;
-}
 
-.anime-link {
-  text-decoration: none;
-  color: #ffffff;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  background: #4a4a4a;
-  transition: all 0.2s;
-  width: 100%;
-  text-align: center;
-}
-
-.anime-link:hover {
-  background: #5a5a5a;
-  transform: translateY(-2px);
-}

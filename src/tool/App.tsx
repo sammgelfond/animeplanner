@@ -73,24 +73,7 @@ const AnimePlanner: React.FC = () => {
             <div className="anime-time">
               {anime.day} à {anime.time}
             </div>
-            <div className="anime-links">
-              <a 
-                href={`https://anime-sama.fr/catalogue/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}/saison1/vostfr/`} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="anime-link"
-              >
-                Voir sur Anime-sama
-              </a>
-              <a 
-                href={`https://v6.voiranime.com/catalogue/${encodeURIComponent(anime.title.toLowerCase().replace(/\s+/g, '-'))}/1/vostfr/`} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="anime-link"
-              >
-                Voir sur Voiranime
-              </a>
-            </div>
+            
           </li>
         ))}
           </div>
