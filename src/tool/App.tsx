@@ -73,6 +73,20 @@ const AnimePlanner: React.FC = () => {
             <div className="anime-time">
               {anime.day} à {anime.time}
             </div>
+            <a 
+              href={`https://v6.voiranime.com/anime/${anime.title
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9\s-]/g, "")
+                .trim()
+                .replace(/\s+/g, "-")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="watch-link"
+            >
+              Regarder
+            </a>
           </li>
         ))}
           </div>
